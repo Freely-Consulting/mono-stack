@@ -1,0 +1,4 @@
+mongodb-dev/data
+redis/data
+server/node_modules
+server/.env
