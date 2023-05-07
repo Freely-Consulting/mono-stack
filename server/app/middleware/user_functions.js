@@ -1,46 +1,40 @@
+const bcrypt = require("bcryptjs");
 const cache = require("../models").cache;
 const db = require("../models").db;
 const User = db.user;
-
+const salt_rounds = 10;
 /*
   create_new_user
 
   Creates a new user and adds them to the database. 
 */
-const create_new_user = async(req, res, next) => {
-  await cache.set('key1', 'value');
-  // Create a new user instance
-  const newUser = new User({
-    name: 'John Doe',
-    email: 'john.doe@example.com',
-    password: 'password123'
-  });
-
-  // Save the new user instance to the database
-  newUser.save((err, savedUser) => {
-    if (err) {
-      console.error(err);
-    } else {
-      console.log(`Saved user: ${savedUser}`);
-    }
+const create_new_user = async (req, res, next) => {
+  // create new user object and hash password
+  const new_user = new User({
+    _id: req.body.user_id,
+    password: bcrypt.hashSync(req.body.password, salt_rounds) 
   });
   
+  // Save the new user instance to the database, if duplicate, return 409 conflict code
+  try {
+    await new_user.save(); 
+  } catch (err) {
+      // mongodb error code for duplicate user is 11000
+      if (err.code === 11000) {
+        console.log(err);
+        res.status(409).send({error: "User already exists"});
+        return;
+      } else {
+        console.error(err);
+      }
+  }
+
   next();
 };
 
-/*
-  is_duplicate 
-
-  Returns true if there is a duplicate email or phone number in the database
-*/
-is_duplicate = (req, res, next) => {
-  console.log("hello world");
-  next();
-};
 
 const user_functions = {
   create_new_user,
-  is_duplicate
 };
 
 module.exports = user_functions;

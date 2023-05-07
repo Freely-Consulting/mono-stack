@@ -18,7 +18,7 @@ models.db.mongoose
     dbName: 'app-db'
   })
   .then(() => {
-    console.log("Successfully connect to MongoDB.");
+    console.log("Successfully connected to MongoDB.");
   })
   .catch(err => {
     console.error("Connection error", err);
@@ -29,7 +29,7 @@ models.db.mongoose
 models.cache
   .connect()
   .then(() => {
-    console.log("Successfully connect to Redis.");
+    console.log("Successfully connected to Redis.");
   })
   .catch(err => {
     console.error("Connection error", err);
@@ -42,7 +42,7 @@ app.get("/", (req, res) => {
 });
 
 // routes
-require('./app/routes/auth.routes')(app);
+require('./app/routes/auth.routes')(app); // passes app object as argument to mount routes
 // require('./app/routes/user.routes')(app);
 
 // set port, listen for requests

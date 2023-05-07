@@ -1,4 +1,5 @@
-const { user_functions } = require("../middleware");
+const { user_functions, auth_functions} = require("../middleware"); 
+
 /*
   This file defines the API endpoints begining with /auth that will be used by the frontened to authenticate a user.
 */
@@ -12,8 +13,20 @@ module.exports = (app) => {
     next();
   });
 
-  app.post("/auth/signup", user_functions.create_new_user, user_functions.is_duplicate, (req, res) => {
-    res.send({ message: "User was registered successfully!" });
+  // create user, generate user token
+  app.post("/auth/signup", user_functions.create_new_user, (req, res) => {
+    res.status(201).send({ message: "User was registered successfully!" });
   });
+
+  //  
+  app.post("/auth/login", (req, res) => {
+    res.send({ message: "User logged in!" });
+  });
+  
+  // for logout, must refresh page and return to home, or when session expires
+  app.post("/auth/login", (req, res) => {
+    res.send({ message: "User logged in!" });
+  });
+
 };
 

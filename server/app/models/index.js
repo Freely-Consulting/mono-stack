@@ -17,8 +17,7 @@ db.user = require("./user.model")
 
   This object will represent the connection to the redis instance through which operations can be performed.
 */
-let cache = {}
-cache = redis.createClient();
+const cache = redis.createClient();
 
 module.exports = {
   db: db,

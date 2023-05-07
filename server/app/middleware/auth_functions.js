@@ -6,6 +6,7 @@
   with such resources. This will be done by checking if the payload token is in the Redis token cache.
 */
 verify_token = (req, res, next) => {
+  // if token is in redis return true, else, return false
   next();
 };
 
@@ -17,6 +18,7 @@ verify_token = (req, res, next) => {
   saved in local storage.
 */
 generate_token = (req, res, next) => {
+  // generate token and add to response
   next();
 };
 
